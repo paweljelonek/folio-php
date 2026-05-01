@@ -22,7 +22,7 @@ examples/
 │   ├── layout.html.twig   # Base layout (header, nav, footer)
 │   ├── default.html.twig  # Default page template
 │   └── error.html.twig    # Error page template
-└── .env                   # Ready-to-use config for this example
+└── .env.example           # Ready-to-use config for this example
 ```
 
 ## Quick Start
@@ -48,7 +48,7 @@ php bin/console assets:link --source=my-theme/assets --target=public/assets
 Copy the example `.env` over the project root:
 
 ```bash
-cp examples/.env .env
+cp examples/.env.example .env
 ```
 
 Or manually set these two lines in your `.env`:
@@ -93,8 +93,8 @@ Then open [http://localhost:8080](http://localhost:8080).
 ```markdown
 ---
 title: My New Page
-slug: my-new-page
-publish_date: 29.04.2026
+template: default
+publish_date: 01.05.2026
 synopsis: A short description.
 image: my-image.jpg
 categories:

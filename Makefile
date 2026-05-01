@@ -24,8 +24,8 @@ cache-clear:
 assets-link:
 	docker compose exec app php bin/console assets:link
 
-example:
-	cp examples/.env .env && php bin/console assets:link && php -S localhost:8080 -t public/
+example: ## local only — no Docker
+	cp examples/.env.example .env && php bin/console assets:link && php -S localhost:8080 -t public/
 
 shell:
 	docker compose exec app sh

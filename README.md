@@ -19,7 +19,7 @@ The solutions available at the time did not meet my expectations. I wanted somet
 ### With Docker (recommended)
 
 ```bash
-git clone https://github.com/your-username/folio-php.git
+git clone https://github.com/paweljelonek/folio-php.git
 cd folio-php
 cp .env.example .env
 make build
@@ -32,7 +32,7 @@ Open [http://localhost:8080](http://localhost:8080).
 ### Without Docker
 
 ```bash
-git clone https://github.com/your-username/folio-php.git
+git clone https://github.com/paweljelonek/folio-php.git
 cd folio-php
 composer install
 cp .env.example .env
@@ -226,12 +226,12 @@ The `examples/` directory contains a fully working demo site that shows FolioPHP
 | Sample pages (home, about, 2 blog posts, 404) | `examples/content/` |
 | Layout + page templates with Twig inheritance | `examples/templates/` |
 | CSS, JS and SVG placeholder images | `examples/assets/` |
-| Ready-to-use `.env` pointing at the example dirs | `examples/.env` |
+| Ready-to-use `.env` pointing at the example dirs | `examples/.env.example` |
 
 Quick start (no Docker):
 
 ```bash
-cp examples/.env .env
+cp examples/.env.example .env
 php bin/console assets:link   # public/assets → ../examples/assets
 php -S localhost:8080 -t public/
 ```
@@ -247,22 +247,26 @@ folio-php/
 │   └── console                 # CLI entry point
 ├── config/
 │   └── container.php           # DI container definitions
-├── content/                    # Markdown pages (CONTENT_PATH)
+├── content/                    # Your Markdown pages (create this, configure via CONTENT_PATH)
 │   ├── _errors/
 │   │   └── 404.md
 │   └── index.md
+├── resources/
+│   └── templates/              # Your Twig templates (create this, configure via TEMPLATES_PATH)
 ├── .docker/
 │   ├── nginx/
 │   │   └── default.conf
 │   └── php/
 │       └── php.ini
-├── examples/                   # Example site (content, templates, assets)
+├── examples/                   # Ready-to-run example site
+│   ├── assets/                 # CSS, JS, images
+│   ├── content/                # Sample Markdown pages
+│   ├── templates/              # Sample Twig templates
+│   ├── .env.example            # Example config pointing at examples/
 │   └── README.md
 ├── public/
 │   ├── index.php               # Web entry point
-│   └── assets/                 # Symlink created by assets:link
-├── resources/
-│   └── templates/              # Twig templates (TEMPLATES_PATH)
+│   └── assets -> ../examples/assets   # Symlink created by assets:link
 ├── src/App/
 │   ├── Cache/                  # CacheInterface, FilesystemCache, NullCache
 │   ├── Console/                # Console commands
