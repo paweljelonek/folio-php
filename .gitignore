@@ -1,0 +1,70 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+nbproject/
+.netbeans/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# PHP
+vendor/
+composer.phar
+*.phar
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Assets symlink (created by assets:link command)
+public/assets
+
+# Cache & generated
+var/cache/*
+!var/cache/.gitkeep
+var/log/
+var/sessions/
+
+# PHPUnit
+.phpunit.cache/
+.phpunit.result.cache
+
+# PHP CS Fixer
+.php-cs-fixer.cache
+.php_cs.cache
+
+# PHPStan / Psalm
+.phpstan/
+psalm.xml.dist
+
+# Symfony / misc
+*.lock.bak
+
+# Docker
+docker-compose.override.yml
+
+# AI clients
+.claude/
+.cursor/
+.aider*
+.aider.chat.history.md
+.aider.input.history
+.copilot/
+.github/copilot-instructions.md
+.codeium/
+.continue/
+.windsurfrules
+.cursorignore
+.cursorindexingignore

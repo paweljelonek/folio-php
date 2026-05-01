@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#164e63"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="url(#g)"/>
+  <circle cx="200" cy="100" r="180" fill="#0891b2" opacity="0.1"/>
+  <circle cx="1000" cy="400" r="220" fill="#6366f1" opacity="0.1"/>
+  <text x="600" y="240" font-family="system-ui,sans-serif" font-size="52" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="-2">About</text>
+  <text x="600" y="300" font-family="system-ui,sans-serif" font-size="20" fill="rgba(255,255,255,0.45)" text-anchor="middle">The story behind FolioPHP</text>
+</svg>

@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Cache\CacheInterface;
+use App\Console\AssetsLinkCommand;
+use App\Console\ClearCacheCommand;
+use DI\ContainerBuilder;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+(new Dotenv())->load(dirname(__DIR__) . '/.env');
+
+$builder = new ContainerBuilder();
+$builder->addDefinitions(require dirname(__DIR__) . '/config/container.php');
+$container = $builder->build();
+
+$application = new Application('foliophp', '1.0.0');
+
+$application->add(new ClearCacheCommand($container->get(CacheInterface::class)));
+$application->add(new AssetsLinkCommand(dirname(__DIR__)));
+
+$application->run();

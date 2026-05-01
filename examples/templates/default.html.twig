@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ content.title }}{% endblock %}
+
+{% block content %}
+<article class="article">
+
+    {% if content.image %}
+    <div class="article-hero">
+        <img src="/assets/images/{{ content.image }}" alt="{{ content.title }}">
+    </div>
+    {% endif %}
+
+    <header class="article-header">
+        {% if content.categories %}
+        <div class="article-categories">
+            {% for category in content.categories %}
+            <span class="badge">{{ category }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1 class="article-title">{{ content.title }}</h1>
+
+        {% if content.synopsis %}
+        <p class="article-synopsis">{{ content.synopsis }}</p>
+        {% endif %}
+
+        {% if content.publish_date %}
+        <time class="article-date" datetime="{{ content.publish_date|date('Y-m-d') }}">
+            {{ content.publish_date|date('d F Y') }}
+        </time>
+        {% endif %}
+    </header>
+
+    <div class="article-body">
+        {{ content.body|raw }}
+    </div>
+
+    {% if content.tags %}
+    <footer class="article-footer">
+        <div class="article-tags">
+            {% for tag in content.tags %}
+            <span class="tag">#{{ tag }}</span>
+            {% endfor %}
+        </div>
+    </footer>
+    {% endif %}
+
+</article>
+{% endblock %}

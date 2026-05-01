@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ content.title }}{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-code">404</div>
+    <div class="article-body">
+        {{ content.body|raw }}
+    </div>
+</div>
+{% endblock %}

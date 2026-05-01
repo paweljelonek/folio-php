@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ content.title ?? '' }}{% endblock %} — FolioPHP</title>
+    <meta name="description" content="{{ content.synopsis ?? '' }}">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="site-logo">Folio<span>PHP</span></a>
+        <nav class="site-nav" id="site-nav">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/blog/hello-world">Blog</a>
+        </nav>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<main class="site-main">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-inner">
+            <p class="footer-brand">Folio<span>PHP</span></p>
+            <nav class="footer-nav">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/blog/hello-world">Blog</a>
+            </nav>
+            <p class="footer-copy">&copy; {{ "now"|date("Y") }} FolioPHP. MIT License.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
