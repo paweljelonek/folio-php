@@ -9,7 +9,7 @@
          displayDetailsOnTestsThatTriggerWarnings="true">
 
     <php>
-        <const name="STUBS_DIR" value="/Users/pawel/Projects/Learn/www.jazzcat.pl-stubs"/>
+        <const name="STUBS_DIR" value="tests/stubs"/>
     </php>
 
     <testsuites>
