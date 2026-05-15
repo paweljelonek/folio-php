@@ -18,6 +18,8 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
+$baseDir = $_ENV['APP_BASE_DIR'] ?? dirname(__DIR__);
+
 return [
 
     // --- Environment configuration ---
@@ -29,14 +31,14 @@ return [
     'app.content_path' => static fn() => rtrim(
         str_starts_with($_ENV['CONTENT_PATH'] ?? 'content', '/')
             ? $_ENV['CONTENT_PATH']
-            : dirname(__DIR__) . '/' . ($_ENV['CONTENT_PATH'] ?? 'content'),
+            : $baseDir . '/' . ($_ENV['CONTENT_PATH'] ?? 'content'),
         '/',
     ),
 
     'app.templates_path' => static fn() => rtrim(
         str_starts_with($_ENV['TEMPLATES_PATH'] ?? 'resources/templates', '/')
             ? $_ENV['TEMPLATES_PATH']
-            : dirname(__DIR__) . '/' . ($_ENV['TEMPLATES_PATH'] ?? 'resources/templates'),
+            : $baseDir . '/' . ($_ENV['TEMPLATES_PATH'] ?? 'resources/templates'),
         '/',
     ),
 
@@ -45,7 +47,7 @@ return [
     'app.cache_dir' => static fn() => rtrim(
         str_starts_with($_ENV['CACHE_DIR'] ?? 'var/cache', '/')
             ? $_ENV['CACHE_DIR']
-            : dirname(__DIR__) . '/' . ($_ENV['CACHE_DIR'] ?? 'var/cache'),
+            : $baseDir . '/' . ($_ENV['CACHE_DIR'] ?? 'var/cache'),
         '/',
     ),
 

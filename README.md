@@ -4,7 +4,7 @@ Lightweight flat-file PHP framework. Write content in Markdown with YAML front m
 
 ## Background
 
-I started working on this framework over two years ago because I needed a simple tool to build my own website. Popular CMS platforms like WordPress were too large and complex for what I actually required. My focus was on creating content using simple Markdown files and using Git for easy versioning.
+I started working on this framework over two years ago because I needed a simple tool to build my own website. Popular CMS platforms like WordPress were too large and complex for what I actually required. My focus was on creating content using simple Markdown files and leveraging Git for easy versioning of website content - every page, blog post and copy change tracked as a commit, with full history, branching and rollback out of the box.
 
 The solutions available at the time did not meet my expectations. I wanted something that was easy to implement, fast, lightweight, and most importantly, did not require a database. Now, after more than two years, I have finally finished the project. I plan to continue developing this tool in my free time and soon use it for other projects I have been planning to do.
 
@@ -21,11 +21,10 @@ The solutions available at the time did not meet my expectations. I wanted somet
 ```bash
 git clone https://github.com/paweljelonek/folio-php.git
 cd folio-php
-cp .env.example .env
-make build
-make up          # app + nginx (port 8080)
-make install     # installs composer dependencies inside container
+make example-docker
 ```
+
+*(Note: `make example-docker` automatically configures the sample site, builds containers and installs dependencies. To start a fresh project instead, copy `.env.example` to `.env` and create your own `content/` and `resources/templates/` directories before running `make install` and `make up`.)*
 
 Open [http://localhost:8080](http://localhost:8080).
 
@@ -37,6 +36,8 @@ cd folio-php
 composer install
 cp .env.example .env
 ```
+
+*(Note: the default `.env` points to `content/` and `resources/templates/`. Create those directories and add your own pages and templates, or copy from `examples/` to get started quickly.)*
 
 Point your web server document root to `public/`. Example with PHP built-in server:
 
@@ -50,11 +51,12 @@ All settings live in `.env`:
 
 | Variable | Default | Description |
 |---|---|---|
+| `APP_BASE_DIR` | `__DIR__` | Base directory for resolving relative paths (useful for multi-site) |
 | `APP_DEBUG` | `true` | Show error details |
 | `SHOW_RENDER_TIME` | `false` | Display page render time bar at bottom of page |
 | `CONTENT_PATH` | `content` | Directory with `.md` files |
 | `TEMPLATES_PATH` | `resources/templates` | Directory with Twig templates |
-| `CACHE_DRIVER` | `null` | `null` — disabled, `file` — filesystem cache |
+| `CACHE_DRIVER` | `null` | `null` - disabled, `file` - filesystem cache |
 | `CACHE_DIR` | `var/cache` | Directory where cache files are stored |
 | `CACHE_TTL` | `3600` | Cache lifetime in seconds (`0` = never expires) |
 | `NGINX_PORT` | `8080` | Host port for Nginx (Docker only) |
@@ -164,7 +166,7 @@ php bin/console assets:link --force   # recreate existing symlink
 
 ## Cache
 
-When `CACHE_DRIVER=file`, each rendered page is saved as a ready-to-serve `.html` file in `CACHE_DIR`. On subsequent requests the HTML file is served directly — no Markdown parsing or template rendering needed.
+When `CACHE_DRIVER=file`, each rendered page is saved as a ready-to-serve `.html` file in `CACHE_DIR`. On subsequent requests the HTML file is served directly - no Markdown parsing or template rendering needed.
 
 Cache refresh is controlled by `CACHE_TTL` (seconds). Set to `0` to cache forever and clear manually:
 
@@ -198,12 +200,14 @@ make cache-clear
 |---|---|
 | `make up` | Start app + nginx |
 | `make down` | Stop all containers |
-| `make build` | Rebuild Docker images |
+| `make restart` | Restart all containers |
+| `make build` | Build Docker images (no cache) |
 | `make install` | Install Composer dependencies |
 | `make test` | Run PHPUnit test suite |
 | `make cache-clear` | Clear page cache |
 | `make assets-link` | Create assets symlink inside container |
-| `make example` | Copy example config and start built-in server |
+| `make example` | Copy example config and start built-in server (local only) |
+| `make example-docker` | Start example site in Docker containers |
 | `make shell` | Open shell in app container |
 | `make logs` | Follow container logs |
 
@@ -228,16 +232,52 @@ The `examples/` directory contains a fully working demo site that shows FolioPHP
 | CSS, JS and SVG placeholder images | `examples/assets/` |
 | Ready-to-use `.env` pointing at the example dirs | `examples/.env.example` |
 
+Quick start (Docker):
+
+```bash
+make example-docker
+```
+
 Quick start (no Docker):
 
 ```bash
-cp examples/.env.example .env
-php bin/console assets:link   # public/assets → ../examples/assets
-php -S localhost:8080 -t public/
+make example
 ```
 
 Full instructions, URL map and tips for adding your own content:
 **[examples/README.md](examples/README.md)**
+
+## Multi-site setup (Multitenancy)
+
+FolioPHP is built with dependency injection and dynamic path resolution, making it perfectly suited for hosting multiple websites from a single core installation.
+
+1. **Keep one shared core installation** (e.g., `/var/www/folio-core`) containing `vendor/`, `src/`, and `config/`.
+2. **For each domain**, create a separate directory (e.g., `/var/www/my-domain.com/`) with its own `public/index.php`, `.env`, `content/` and `templates/`.
+3. **In the domain's `public/index.php`**, change the `require` paths to point to the shared core:
+```php
+$corePath = '/var/www/folio-core';
+$sitePath = dirname(__DIR__); // Point to the domain's root
+
+require $corePath . '/vendor/autoload.php';
+(new Symfony\Component\Dotenv\Dotenv())->load($sitePath . '/.env');
+
+$builder = new DI\ContainerBuilder();
+$builder->addDefinitions(require $corePath . '/config/container.php');
+$container = $builder->build();
+// ...
+```
+4. **In the domain's `.env`**, define the base directory so the shared core knows where to look for content and cache:
+```env
+APP_BASE_DIR=/var/www/my-domain.com
+CONTENT_PATH=content
+TEMPLATES_PATH=templates
+```
+
+> ⚠️ **Cache isolation**
+>
+> `CACHE_DIR` is resolved relative to `APP_BASE_DIR`, so each domain automatically gets its own cache directory (e.g. `/var/www/my-domain.com/var/cache`). Cache keys do **not** include the domain name - if two domains share the same absolute `CACHE_DIR` path, their cached pages will collide and overwrite each other.
+>
+> To stay safe: always use a relative `CACHE_DIR` (default: `var/cache`) together with a unique `APP_BASE_DIR` per domain.
 
 ## Project structure
 
@@ -256,8 +296,9 @@ folio-php/
 ├── .docker/
 │   ├── nginx/
 │   │   └── default.conf
-│   └── php/
-│       └── php.ini
+│   ├── php/
+│   │   └── php.ini
+│   └── Dockerfile
 ├── examples/                   # Ready-to-run example site
 │   ├── assets/                 # CSS, JS, images
 │   ├── content/                # Sample Markdown pages
@@ -283,4 +324,4 @@ folio-php/
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
