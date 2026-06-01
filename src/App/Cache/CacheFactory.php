@@ -6,6 +6,7 @@ namespace App\Cache;
 
 final class CacheFactory
 {
+    /** @param array<string, mixed> $options */
     public function create(string $driver, array $options = []): CacheInterface
     {
         return match ($driver) {

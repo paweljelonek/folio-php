@@ -29,6 +29,7 @@ final class RouteResolverTest extends TestCase
         $this->assertSame(realpath($this->contentDir . '/' . $expectedFile), $result);
     }
 
+    /** @return array<string, array{string, string}> */
     public static function validRouteProvider(): array
     {
         return [
@@ -54,6 +55,7 @@ final class RouteResolverTest extends TestCase
         $this->assertNull($this->resolver->resolve($url));
     }
 
+    /** @return array<string, array{string}> */
     public static function blockedUrlProvider(): array
     {
         return [

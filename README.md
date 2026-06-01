@@ -204,6 +204,7 @@ make cache-clear
 | `make build` | Build Docker images (no cache) |
 | `make install` | Install Composer dependencies |
 | `make test` | Run PHPUnit test suite |
+| `make phpstan` | Run PHPStan static analysis |
 | `make cache-clear` | Clear page cache |
 | `make assets-link` | Create assets symlink inside container |
 | `make example` | Copy example config and start built-in server (local only) |
@@ -214,12 +215,18 @@ make cache-clear
 ## Running tests
 
 ```bash
-# Local
 php vendor/bin/phpunit --testdox
-
-# Docker
-make test
 ```
+
+## Static analysis
+
+The project uses [PHPStan](https://phpstan.org) at level 6.
+
+```bash
+php vendor/bin/phpstan analyse --memory-limit=256M
+```
+
+PHPStan also runs automatically in CI on every push and pull request to `main` and `develop`.
 
 ## Example site
 

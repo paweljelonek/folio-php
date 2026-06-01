@@ -21,6 +21,7 @@ final class PageHandler
         private readonly CacheInterface $cache,
     ) {}
 
+    /** @param array<string, mixed> $args */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $urlPath  = '/' . ltrim($args['path'] ?? '', '/');

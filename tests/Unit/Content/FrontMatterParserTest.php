@@ -77,10 +77,10 @@ final class FrontMatterParserTest extends TestCase
     {
         $result = $this->parser->parse($raw);
 
-        $this->assertIsArray($result->metadata);
-        $this->assertIsString($result->body);
+        $this->assertSame([], $result->metadata);
     }
 
+    /** @return array<string, array{string}> */
     public static function emptyDocumentProvider(): array
     {
         return [

@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyse --memory-limit=256M
+
       - name: Run unit tests
         run: vendor/bin/phpunit --testsuite Unit
 

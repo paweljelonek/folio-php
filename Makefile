@@ -1,4 +1,4 @@
-.PHONY: help up down restart build install test cache-clear assets-link example example-docker shell logs
+.PHONY: help up down restart build install test phpstan cache-clear assets-link example example-docker shell logs
 
 -include .env
 
@@ -16,6 +16,7 @@ help:
 	@echo "  \033[36mbuild               \033[0m Build containers without cache"
 	@echo "  \033[36minstall             \033[0m Install composer dependencies"
 	@echo "  \033[36mtest                \033[0m Run tests"
+	@echo "  \033[36mphpstan             \033[0m Run static analysis"
 	@echo "  \033[36mcache-clear         \033[0m Clear cache"
 	@echo "  \033[36massets-link         \033[0m Link assets"
 	@echo "  \033[36mexample             \033[0m local only — no Docker"
@@ -44,6 +45,9 @@ install:
 
 test:
 	docker compose exec app php vendor/bin/phpunit --testdox
+
+phpstan:
+	docker compose exec app php vendor/bin/phpstan analyse --memory-limit=256M
 
 cache-clear:
 	docker compose exec app php bin/console cache:clear

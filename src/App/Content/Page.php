@@ -10,6 +10,11 @@ final class Page
 {
     private const KNOWN_KEYS = ['title', 'template', 'slug', 'publish_date', 'synopsis', 'image', 'categories', 'tags'];
 
+    /**
+     * @param array<mixed>         $categories
+     * @param array<mixed>         $tags
+     * @param array<string, mixed> $metadata
+     */
     public function __construct(
         private readonly string $title,
         private readonly string $template,
@@ -23,6 +28,7 @@ final class Page
         private readonly array $metadata,
     ) {}
 
+    /** @param array<string, mixed> $metadata */
     public static function fromParsed(array $metadata, string $body): self
     {
         $publishDate = null;
@@ -51,11 +57,15 @@ final class Page
     public function getPublishDate(): ?DateTimeImmutable { return $this->publishDate; }
     public function getSynopsis(): string { return $this->synopsis; }
     public function getImage(): string { return $this->image; }
+    /** @return array<mixed> */
     public function getCategories(): array { return $this->categories; }
+    /** @return array<mixed> */
     public function getTags(): array { return $this->tags; }
     public function getBody(): string { return $this->body; }
+    /** @return array<string, mixed> */
     public function getMetadata(): array { return $this->metadata; }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

@@ -46,6 +46,7 @@ final class RouteResolver
         return null;
     }
 
+    /** @param array<string> $segments */
     private function hasInvalidSegments(array $segments): bool
     {
         foreach ($segments as $segment) {

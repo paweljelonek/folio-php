@@ -95,6 +95,7 @@ final class PageHandlerTest extends TestCase
     public function servesFromCacheOnSecondRequest(): void
     {
         $cache = new class implements \App\Cache\CacheInterface {
+            /** @var array<string, string> */
             public array $stored = [];
 
             public function get(string $key): ?string
